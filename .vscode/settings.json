@@ -9,5 +9,10 @@
   },
   "editor.quickSuggestions": {
     "strings": "on"
-  }
+  },
+  // recommended by nuxt ui
+  "tailwindCSS.classAttributes": ["class", "ui"],
+  "tailwindCSS.experimental.classRegex": [
+    ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ]
 }
