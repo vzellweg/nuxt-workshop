@@ -18,8 +18,10 @@
     </UHeader>
 
     <UMain class="flex-1 flex flex-col">
-      <div class="flex-1 flex flex-col md:px-24 md:py-16 sm:py-8">
-        <NuxtPage />
+      <div class="flex-1">
+        <NuxtLayout>
+          <NuxtPage />
+        </NuxtLayout>
       </div>
 
       <!-- Show footer at the bottom of the page when no overflowing content is present -->

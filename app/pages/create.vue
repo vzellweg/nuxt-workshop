@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: "padded",
+});
+
 interface WorkshopForm {
   title: string;
   description: string;

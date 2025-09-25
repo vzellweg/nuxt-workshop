@@ -1,3 +1,9 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: "padded",
+});
+</script>
+
 <template>
   <UContainer>
     <h1 class="text-4xl text-center mb-12">Default Workshopping Section</h1>
@@ -14,5 +20,3 @@
     </div>
   </UContainer>
 </template>
-
-<script setup lang="ts"></script>
