@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "vue.volar",
+        "prisma.prisma",
+        "dbaeumer.vscode-eslint"
+    ],
+    "unwantedRecommendations": [
+        // Vue 2 extensions
+        "octref.vetur"
+    ]
+}
