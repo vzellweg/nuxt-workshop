@@ -5,7 +5,7 @@
       <div class="w-3/4">
         <h2 class="text-2xl font-bold">Document Workshops</h2>
         <p>No workshops available</p>
-        <UButton class="mt-4">Create Workshop</UButton>
+        <UButton class="mt-4" to="/create">Create Workshop</UButton>
       </div>
       <div class="w-1/4">
         <h2 class="text-2xl font-bold">Recent Activity</h2>
