@@ -1,0 +1,9 @@
+---
+description: UI rules
+globs:
+alwaysApply: true
+---
+
+- use tailwind css for styling wherever possible, avoid using CSS classes manually
+- use the nuxt ui (@nuxt/ui) components wherever possible
+- use global @apply directives when you notice certain groups of tailwind classes are used in multiple places
