@@ -1,2 +1,9 @@
 @import "tailwindcss" theme(static);
 @import "@nuxt/ui";
+
+/* Global page heading styles */
+@layer components {
+  .page-heading {
+    @apply text-4xl text-center mb-12;
+  }
+}

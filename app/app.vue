@@ -9,11 +9,24 @@
     <!-- Navbar -->
     <UHeader>
       <template #left>
-        <h1 class="text-xl font-semibold">Workshopping Platform</h1>
+        <UButton
+          variant="ghost"
+          to="/"
+          class="text-xl font-semibold p-0 h-auto text-gray-900 dark:text-gray-100"
+        >
+          Workshopping Platform
+        </UButton>
       </template>
 
       <template #right>
-        <USkeleton class="h-8 w-8 rounded-full" />
+        <UButton
+          variant="ghost"
+          size="sm"
+          to="/login"
+          class="h-8 w-8 rounded-full p-0"
+        >
+          <USkeleton class="h-8 w-8 rounded-full" />
+        </UButton>
       </template>
     </UHeader>
 
