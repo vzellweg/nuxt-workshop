@@ -84,7 +84,7 @@ const publishWorkshop = async () => {
 <template>
   <UContainer>
     <div class="max-w-2xl mx-auto">
-      <h1 class="text-4xl text-center mb-12">Create a New Workshop</h1>
+      <h1 class="page-heading">Create a New Workshop</h1>
       <UButton
         color="secondary"
         variant="outline"
