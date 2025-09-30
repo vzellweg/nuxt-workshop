@@ -5,18 +5,18 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
     "@nuxt/test-utils",
-    "@nuxt/ui",
-    // "@nuxtjs/supabase",
+    "@nuxt/ui", // "@nuxtjs/supabase",
     "@pinia/nuxt",
+    "@nuxtjs/supabase",
   ],
   css: ["@/assets/css/main.css"],
-  // supabase: {
-  //   redirectOptions: {
-  //     login: "/login",
-  //     // TODO: update this when we figure out what the user flow should be
-  //     callback: "/confirm",
-  //     // Exclude the root route from redirecting to login
-  //     exclude: ["/"],
-  //   },
-  // },
+  supabase: {
+    redirectOptions: {
+      login: "/login",
+      // TODO: update this when we figure out what the user flow should be
+      callback: "/confirm",
+      // Exclude the root route from redirecting to login
+      exclude: ["/", "/create"],
+    },
+  },
 });
