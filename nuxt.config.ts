@@ -10,13 +10,11 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
   ],
   css: ["@/assets/css/main.css"],
-  // supabase: {
-  //   redirectOptions: {
-  //     login: "/login",
-  //     // TODO: update this when we figure out what the user flow should be
-  //     callback: "/confirm",
-  //     // Exclude the root route from redirecting to login
-  //     exclude: ["/"],
-  //   },
-  // },
+  runtimeConfig: {
+    // map all private variables from the environment here
+
+    public: {
+      // insert any public variables exposed to the client here
+    },
+  },
 });
