@@ -1,3 +1,5 @@
+<!-- TODO: add delete button -->
+<!-- TODO: edit and delete buttons should only be shown if the user is the owner of the workshop -->
 <script setup lang="ts">
 import type { Workshop } from "~/types";
 
@@ -6,15 +8,20 @@ const { workshop } = defineProps<{
   isLast: boolean;
   workshop: Workshop;
 }>();
+
+const emits = defineEmits(["goto", "edit", "delete"]);
+
+const { formatDate } = useDateFormat();
 </script>
 
 <template>
   <div
-    class="p-4 border border-gray-200 bg-white hover:bg-gray-50 transition-colors duration-200"
+    class="p-4 border border-gray-200 bg-white hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
     :class="{
       'rounded-t-lg': isFirst,
       'rounded-b-lg': isLast,
     }"
+    @click="emits('goto', workshop.id)"
   >
     <div class="flex items-start justify-between">
       <div class="flex-1 min-w-0">
@@ -26,7 +33,7 @@ const { workshop } = defineProps<{
             size="sm"
             icon="mdi:file-edit"
             class="align-middle text-gray-500 hover:text-gray-700 cursor-pointer"
-            @click="() => console.log('Edit workshop:', workshop.id)"
+            @click="() => emits('edit', workshop.id)"
           />
         </h3>
         <div class="mt-1">
@@ -57,7 +64,7 @@ const { workshop } = defineProps<{
           </span>
         </div>
         <div class="text-xs mt-3 text-gray-400">
-          Updated {{ new Date(workshop.updatedAt).toLocaleDateString() }}
+          Updated {{ formatDate(workshop.updatedAt) }}
         </div>
       </div>
     </div>
