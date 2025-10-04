@@ -1,8 +1,8 @@
 import type { Workshop, WorkshopKind } from "~/types";
-import { MOCK_WORKSHOP } from "./mockData";
+import { MOCK_WORKSHOPS } from "./mockData";
 
 const useWorkshops = () => {
-  const workshops = ref<Workshop[]>([MOCK_WORKSHOP]);
+  const workshops = ref<Workshop[]>(MOCK_WORKSHOPS);
 
   const createWorkshop = (
     title: string,
