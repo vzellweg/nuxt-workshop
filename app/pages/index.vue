@@ -6,7 +6,7 @@ definePageMeta({
 
 <template>
   <UContainer>
-    <h1 class="page-heading text-start">Default Workshopping Section</h1>
+    <h1 class="page-heading">Default Workshopping Section</h1>
     <div class="flex flex-row align-center gap-16">
       <div class="w-2/3">
         <h2 class="text-2xl font-bold mb-3">Document Workshops</h2>
