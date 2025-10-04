@@ -3,5 +3,5 @@
 
 /* Global page heading styles */
 .page-heading {
-  @apply text-4xl text-center mb-12;
+  @apply text-4xl text-start mb-12;
 }

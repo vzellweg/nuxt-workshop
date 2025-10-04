@@ -7,13 +7,13 @@ definePageMeta({
 <template>
   <UContainer>
     <h1 class="page-heading">Default Workshopping Section</h1>
-    <div class="flex flex-row align-center">
-      <div class="w-3/4">
-        <h2 class="text-2xl font-bold">Document Workshops</h2>
-        <p>No workshops available</p>
+    <div class="flex flex-row align-center gap-16">
+      <div class="w-2/3">
+        <h2 class="text-2xl font-bold mb-3">Document Workshops</h2>
+        <WorkshopList />
         <UButton class="mt-4" to="/create">Create Workshop</UButton>
       </div>
-      <div class="w-1/4">
+      <div class="w-1/3">
         <h2 class="text-2xl font-bold">Recent Activity</h2>
         <p>No activity available</p>
       </div>
