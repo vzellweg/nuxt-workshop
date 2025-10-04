@@ -2,6 +2,7 @@ import type { Workshop, WorkshopKind } from "~/types";
 import { MOCK_WORKSHOPS } from "./mockData";
 
 const useWorkshops = () => {
+  // TODO: implement actual api calls and database storage
   const workshops = ref<Workshop[]>(MOCK_WORKSHOPS);
 
   const createWorkshop = (
