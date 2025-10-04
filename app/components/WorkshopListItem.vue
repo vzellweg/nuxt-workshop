@@ -19,7 +19,15 @@ const { workshop } = defineProps<{
     <div class="flex items-start justify-between">
       <div class="flex-1 min-w-0">
         <h3 class="text-lg font-medium text-gray-900 truncate">
-          {{ workshop.title }}
+          <span class="align-middle me-3">{{ workshop.title }}</span>
+          <UButton
+            v-if="!workshop.isPublished"
+            variant="ghost"
+            size="sm"
+            icon="mdi:file-edit"
+            class="align-middle text-gray-500 hover:text-gray-700 cursor-pointer"
+            @click="() => console.log('Edit workshop:', workshop.id)"
+          />
         </h3>
         <div class="mt-1">
           <span class="text-sm text-gray-500">
@@ -31,19 +39,19 @@ const { workshop } = defineProps<{
         <div>
           <span
             v-if="workshop.isDeleted"
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-error text-error-100"
           >
             Deleted
           </span>
           <span
             v-else-if="workshop.isPublished"
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success text-success-800"
           >
             Published
           </span>
           <span
             v-else
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning text-warning-800"
           >
             Unpublished
           </span>
