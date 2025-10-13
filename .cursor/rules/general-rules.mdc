@@ -1,9 +1,22 @@
 ---
-description: UI rules
+description: General project rules
 globs:
 alwaysApply: true
 ---
 
+## UI/Styling
+
 - use tailwind css for styling wherever possible, avoid using CSS classes manually
 - use the nuxt ui (@nuxt/ui) components wherever possible
 - use global @apply directives when you notice certain groups of tailwind classes are used in multiple places
+
+## Directory Structure (Nuxt 4)
+
+- Follow Nuxt 4 directory structure conventions
+- Use `shared/` directory at root level for code that needs to be accessed by both client (app/) and server (server/)
+- Shared utilities should be placed in `shared/utils/`
+- Shared types should be placed in `shared/types.ts` and will be auto-imported globally (no import statement needed)
+- Client-only code goes in `app/` directory (composables, components, pages, etc.)
+- Server-only code goes in `server/` directory (API routes, middleware, etc.)
+- Import from shared directory using `~/../shared/` path from server routes, or `~/shared/` from app code
+- TypeScript types and interfaces from `shared/types.ts` are automatically available everywhere without explicit imports

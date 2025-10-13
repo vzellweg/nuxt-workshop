@@ -1,8 +1,6 @@
 <!-- TODO: add delete button -->
 <!-- TODO: edit and delete buttons should only be shown if the user is the owner of the workshop -->
 <script setup lang="ts">
-import type { Workshop } from "~/types";
-
 const { workshop } = defineProps<{
   isFirst: boolean;
   isLast: boolean;
