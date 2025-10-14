@@ -2,8 +2,20 @@
 definePageMeta({
   layout: "padded",
 });
+// TODO: make this a toggle button and query parameter
+const showDeleted = ref(true);
 
-const { workshops } = useWorkshops();
+const { workshops, fetchAllSSR, fetchAll } = useWorkshops();
+
+const updateWorkshops = async () => {
+  const { data } = await fetchAllSSR(showDeleted.value);
+  workshops.value = data.value || [];
+};
+await updateWorkshops();
+
+watch(showDeleted, async () => {
+  fetchAll();
+});
 
 const editWorkshop = (id: string) => {
   console.log("Edit workshop:", id);
@@ -24,6 +36,10 @@ const deleteWorkshop = (id: string) => {
     <div class="flex flex-row align-center gap-16">
       <div class="w-2/3">
         <h2 class="text-2xl font-bold mb-3">Document Workshops</h2>
+        <div class="flex flex-row align-center gap-2 mb-3">
+          <span>Show Deleted</span>
+          <USwitch v-model="showDeleted" />
+        </div>
         <WorkshopList
           :workshops="workshops"
           @edit="editWorkshop"
