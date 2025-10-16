@@ -1,11 +1,8 @@
-import type { Workshop, WorkshopKind } from "~/types";
-import { MOCK_WORKSHOPS } from "./mockData";
-
 const useWorkshops = () => {
   // TODO: implement actual api calls and database storage
   const workshops = ref<Workshop[]>(MOCK_WORKSHOPS);
 
-  const createWorkshop = (
+  const createWorkshop = async (
     title: string,
     description: string,
     content: object,
@@ -32,9 +29,13 @@ const useWorkshops = () => {
       isDeleted: false,
       deletedAt: null,
     };
-    workshops.value.push(workshop);
+    const data = await $fetch<Workshop>("/api/workshop", {
+      method: "POST",
+      body: { workshop },
+    });
+    workshops.value.push(data);
     // Should I return the workshop referenced from inside the workshops array so it is a reactive Proxy Object?
-    return workshops.value[workshops.value.length - 1];
+    return data;
   };
 
   const getWorkshop = (id: string) => {

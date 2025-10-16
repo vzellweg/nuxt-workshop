@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Workshop } from "~/types";
 defineProps<{
   workshops: Workshop[];
 }>();

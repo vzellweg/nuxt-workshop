@@ -1,5 +1,6 @@
-import type { Workshop } from "~/types";
-import mockDataTipTap from "./mockDataTipTap";
+// We need to explicity import types here since auto-importing doesn't apply within the shared directory
+import type { Workshop } from "../types";
+import mockDataTipTap from "./mockDataTipTap.json";
 
 const MOCK_WORKSHOPS: Workshop[] = [
   {
