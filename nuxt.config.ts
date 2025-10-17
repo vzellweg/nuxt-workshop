@@ -11,8 +11,12 @@ export default defineNuxtConfig({
   ],
   css: ["@/assets/css/main.css"],
   runtimeConfig: {
-    // map all private variables from the environment here
-
+    // define all private variables from the environment at the root level of this property
+    /** @example
+     * Below will be overridden by the .env file variable NUXT_OPENAI_API_KEY
+     * openaiApiKey: '',
+     * So anything that is public (stored int the repository) can be defined in this `runtimeConfig`, but private variables should be defined in the .env file.
+     */
     public: {
       // insert any public variables exposed to the client here
     },
