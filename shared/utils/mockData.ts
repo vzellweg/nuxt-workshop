@@ -48,7 +48,7 @@ const MOCK_WORKSHOPS: Workshop[] = [
     publishedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    isDeleted: true,
+    isDeleted: false,
     deletedAt: null,
   },
 ];

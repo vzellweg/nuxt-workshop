@@ -1,6 +1,32 @@
 const useWorkshops = () => {
   // TODO: implement actual api calls and database storage
-  const workshops = ref<Workshop[]>(MOCK_WORKSHOPS);
+  // TODO: should we make a generic `useResource('/resource')` composable?
+  const workshops = ref<Workshop[]>([]);
+  const workshop = ref<Workshop | null>(null);
+  const loading = ref(false);
+
+  const fetchAll = async () => {
+    loading.value = true;
+    try {
+      const data = await $fetch<Workshop[]>("/api/workshops", {
+        method: "GET",
+      });
+      workshops.value = data;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchAllSSR = (showDeleted: boolean) => {
+    return useAsyncData("workshops", () =>
+      $fetch<Workshop[]>("/api/workshops", {
+        method: "GET",
+        query: {
+          showDeleted: showDeleted.toString(),
+        },
+      })
+    );
+  };
 
   const createWorkshop = async (
     title: string,
@@ -10,60 +36,77 @@ const useWorkshops = () => {
     workshopKind: WorkshopKind = "document",
     published?: boolean
   ) => {
-    const id = workshops.value.length + 1;
+    loading.value = true;
     const draftJson = JSON.stringify(content);
     const publishedJson = published ? draftJson : null;
-    const workshop: Workshop = {
-      id: id.toString(),
-      title,
-      description,
-      kind: workshopKind,
-      slug: null,
-      ownerId: "johndoe",
-      draftJson,
-      publishedJson,
-      isPublished: published ?? false,
-      publishedAt: published ? new Date().toISOString() : null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isDeleted: false,
-      deletedAt: null,
-    };
-    const data = await $fetch<Workshop>("/api/workshop", {
-      method: "POST",
-      body: { workshop },
-    });
-    workshops.value.push(data);
-    // Should I return the workshop referenced from inside the workshops array so it is a reactive Proxy Object?
-    return data;
-  };
 
-  const getWorkshop = (id: string) => {
-    return workshops.value.find((workshop) => workshop.id === id);
-  };
-
-  const updateWorkshop = (workshop: Workshop) => {
-    const index = workshops.value.findIndex((w) => w.id === workshop.id);
-    if (index !== -1) {
-      workshops.value[index] = workshop;
-    } else {
-      throw new Error("Workshop not found");
-    }
-    return workshops.value[index];
-  };
-
-  const deleteWorkshop = (id: string) => {
-    const index = workshops.value.findIndex((w) => w.id === id);
-    if (index !== -1) {
-      workshops.value[index]!.isDeleted = true;
-      workshops.value[index]!.deletedAt = new Date().toISOString();
-    } else {
-      throw new Error("Workshop not found");
+    try {
+      const data = await $fetch<Workshop>("/api/workshops", {
+        method: "POST",
+        body: {
+          title,
+          description,
+          kind: workshopKind,
+          slug: null,
+          ownerId: "johndoe",
+          draftJson,
+          publishedJson,
+          isPublished: published ?? false,
+        },
+      });
+      await fetchAll();
+      return data;
+    } finally {
+      loading.value = false;
     }
   };
+
+  const getWorkshop = async (id: string) => {
+    loading.value = true;
+    try {
+      const data = await $fetch<Workshop>(`/api/workshops/${id}`, {
+        method: "GET",
+      });
+      workshop.value = data;
+      return data;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateWorkshop = async (workshopData: Workshop) => {
+    loading.value = true;
+    try {
+      const data = await $fetch<Workshop>(`/api/workshops/${workshopData.id}`, {
+        method: "PUT",
+        body: workshopData,
+      });
+      await fetchAll();
+      return data;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const deleteWorkshop = async (id: string) => {
+    loading.value = true;
+    try {
+      await $fetch(`/api/workshops/${id}`, {
+        method: "DELETE",
+      });
+      await fetchAll();
+    } finally {
+      loading.value = false;
+    }
+  };
+  //
 
   return {
     workshops,
+    workshop,
+    loading,
+    fetchAll,
+    fetchAllSSR,
     createWorkshop,
     getWorkshop,
     updateWorkshop,
