@@ -1,7 +1,17 @@
 <script setup lang="ts">
+// ---- Page Meta -----------------------------------------------------------------
 definePageMeta({
   layout: "padded",
 });
+// ---- Set Window Title -----------------------------------------------------------------
+const appConfig = useAppConfig();
+const title = appConfig.title;
+useHead({
+  // TODO: Maybe add the section to this title later.
+  title: `Home | ${title}`,
+});
+
+// ---- Page Functionality ---------------------------------------------------------------
 // TODO: make this a toggle button and query parameter
 const showDeleted = ref(true);
 
@@ -18,7 +28,7 @@ watch(showDeleted, async () => {
 });
 
 const editWorkshop = (id: string) => {
-  console.log("Edit workshop:", id);
+  navigateTo(`/edit?id=${id}`);
 };
 
 const gotoWorkshop = (id: string) => {
@@ -46,7 +56,7 @@ const deleteWorkshop = (id: string) => {
           @goto="gotoWorkshop"
           @delete="deleteWorkshop"
         />
-        <UButton class="mt-4" to="/create">Create Workshop</UButton>
+        <UButton class="mt-4" to="/edit">Create Workshop</UButton>
       </div>
       <div class="w-1/3">
         <h2 class="text-2xl font-bold">Recent Activity</h2>
