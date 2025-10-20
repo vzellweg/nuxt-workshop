@@ -19,14 +19,23 @@
       </template>
 
       <template #right>
-        <UButton
-          variant="ghost"
-          size="sm"
-          to="/login"
-          class="h-8 w-8 rounded-full p-0"
-        >
-          <USkeleton class="h-8 w-8 rounded-full" />
-        </UButton>
+        <div class="flex items-center gap-1.5">
+          <ClientOnly>
+            <UColorModeButton />
+            <template #fallback>
+              <div class="h-8 w-8 rounded-full" />
+            </template>
+          </ClientOnly>
+          <UButton
+            variant="ghost"
+            size="sm"
+            to="/login"
+            class="h-8 w-8 rounded-full p-0"
+            aria-label="Login"
+          >
+            <Icon class="h-8 w-8" name="mdi:account-circle" />
+          </UButton>
+        </div>
       </template>
     </UHeader>
 

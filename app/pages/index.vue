@@ -1,12 +1,34 @@
 <script setup lang="ts">
+// ---- Page Meta -----------------------------------------------------------------
 definePageMeta({
   layout: "padded",
 });
+// ---- Set Window Title -----------------------------------------------------------------
+const appConfig = useAppConfig();
+const title = appConfig.title;
+useHead({
+  // TODO: Maybe add the section to this title later.
+  title: `Home | ${title}`,
+});
 
-const { workshops } = useWorkshops();
+// ---- Page Functionality ---------------------------------------------------------------
+// TODO: make this a toggle button and query parameter
+const showDeleted = ref(true);
+
+const { workshops, fetchAllSSR, fetchAll } = useWorkshops();
+
+const updateWorkshops = async () => {
+  const { data } = await fetchAllSSR(showDeleted.value);
+  workshops.value = data.value || [];
+};
+await updateWorkshops();
+
+watch(showDeleted, async () => {
+  fetchAll();
+});
 
 const editWorkshop = (id: string) => {
-  console.log("Edit workshop:", id);
+  navigateTo(`/edit?id=${id}`);
 };
 
 const gotoWorkshop = (id: string) => {
@@ -24,13 +46,17 @@ const deleteWorkshop = (id: string) => {
     <div class="flex flex-row align-center gap-16">
       <div class="w-2/3">
         <h2 class="text-2xl font-bold mb-3">Document Workshops</h2>
+        <div class="flex flex-row align-center gap-2 mb-3">
+          <span>Show Deleted</span>
+          <USwitch v-model="showDeleted" />
+        </div>
         <WorkshopList
           :workshops="workshops"
           @edit="editWorkshop"
           @goto="gotoWorkshop"
           @delete="deleteWorkshop"
         />
-        <UButton class="mt-4" to="/create">Create Workshop</UButton>
+        <UButton class="mt-4" to="/edit">Create Workshop</UButton>
       </div>
       <div class="w-1/3">
         <h2 class="text-2xl font-bold">Recent Activity</h2>
