@@ -14,7 +14,7 @@ const { formatDate } = useDateFormat();
 
 <template>
   <div
-    class="p-4 border border-gray-200 bg-white hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+    class="p-4 border border-(--ui-border-muted) bg-(--ui-bg-muted) hover:bg-(--ui-bg-subtle) transition-colors duration-200 cursor-pointer"
     :class="{
       'rounded-t-lg': isFirst,
       'rounded-b-lg': isLast,
@@ -23,7 +23,7 @@ const { formatDate } = useDateFormat();
   >
     <div class="flex items-start justify-between">
       <div class="flex-1 min-w-0">
-        <h3 class="text-lg font-medium text-gray-900 truncate">
+        <h3 class="text-lg font-medium truncate">
           <span class="align-middle me-3">{{ workshop.title }}</span>
           <UButton
             v-if="!workshop.isPublished"
@@ -35,7 +35,7 @@ const { formatDate } = useDateFormat();
           />
         </h3>
         <div class="mt-1">
-          <span class="text-sm text-gray-500">
+          <span class="text-sm text-(--ui-text-muted)">
             {{ workshop.ownerId || "Unknown author" }}
           </span>
         </div>
@@ -61,7 +61,7 @@ const { formatDate } = useDateFormat();
             Unpublished
           </span>
         </div>
-        <div class="text-xs mt-3 text-gray-400">
+        <div class="text-xs mt-3 text-(--ui-text-muted)">
           Updated {{ formatDate(workshop.updatedAt) }}
         </div>
       </div>
