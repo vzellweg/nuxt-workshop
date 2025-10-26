@@ -1,0 +1,40 @@
+---
+alwaysApply: true
+globs: app/components/**,app/pages/**,layers/**/pages/**,layers/**/components/**
+description: Guidelines for creating components and pages, emphasizing Nuxt UI usage
+---
+
+# Component Development Guide
+
+## Before Creating a Custom Component
+
+Always check if a suitable Nuxt UI component already exists for your use case. Use the Nuxt UI MCP tools to search for available components:
+
+- `mcp_nuxt-ui_list_components` - List all available components
+- `mcp_nuxt-ui_search_components_by_category` - Search by category or text
+- `mcp_nuxt-ui_get_component` - Get detailed documentation for a specific component
+- `mcp_nuxt-ui_get_component_metadata` - Get props, slots, and events for a component
+
+**Only create a custom component if the Nuxt UI library does not provide a suitable alternative.**
+
+## Creating Custom Components
+
+When building custom components, follow these styling guidelines from [general-rules.mdc](mdc:general-rules.mdc):
+
+- Use Tailwind CSS for styling wherever possible, avoid using CSS classes manually
+- Use global `@apply` directives when you notice certain groups of Tailwind classes are used in multiple places
+- Continue using Nuxt UI components within your custom components whenever applicable
+
+## Component Location
+
+Place all custom components in:
+
+- `app/components/` for client-side components
+- Follow Nuxt 4 auto-import conventions (files in `components/` are automatically imported)
+
+## Component Structure
+
+- Use the `<script setup>` syntax with TypeScript
+- Define component props explicitly using `defineProps`
+- Use Tailwind utility classes for responsive and interactive styles
+- Leverage Nuxt UI's color system and design tokens when styling custom components
