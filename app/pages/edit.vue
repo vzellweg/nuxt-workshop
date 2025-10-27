@@ -1,4 +1,13 @@
 <script setup lang="ts">
+/**
+ * Edit Workshop Page
+ * This page is pretty clunky as it was quickly ported from the old options api
+ * page.
+ * @todo: utilize Nuxt Data Fetching techniques to clean up the initialization of editor
+ * @todo: related to above, use the useEditor composable to clean up the initialization of editor and avoid usage of the mounted hook
+ * @todo: remove the custom prosemirror styles and use semantic classes from theme instead so they match the light/dark mode
+ * @todo: make sure validation works correctly for all fields, and the validation messages are displayed correctly and consistently for both the form and the editor
+ */
 import { Editor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyle } from "@tiptap/extension-text-style";
