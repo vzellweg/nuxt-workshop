@@ -5,7 +5,6 @@
  * page.
  * @todo: utilize Nuxt Data Fetching techniques to clean up the initialization of editor
  * @todo: related to above, use the useEditor composable to clean up the initialization of editor and avoid usage of the mounted hook
- * @todo: remove the custom prosemirror styles and use semantic classes from theme instead so they match the light/dark mode
  * @todo: make sure validation works correctly for all fields, and the validation messages are displayed correctly and consistently for both the form and the editor
  */
 import { Editor, EditorContent } from "@tiptap/vue-3";
@@ -349,22 +348,27 @@ const publishWorkshop = async () => {
         </UForm>
 
         <!-- Workshop Document Editor -->
-        <div class="space-y-2">
+        <div class="space-y-2 mt-3">
           <div class="flex items-center justify-between">
-            <label class="text-sm font-medium text-gray-900">
+            <label class="text-sm font-medium">
               Workshop Document
               <span class="text-red-500">*</span>
             </label>
           </div>
           <div
-            class="border rounded-md"
+            class="border border-(--ui-border-muted) rounded-md"
             :class="{ 'border-red-500': isEditorEmpty }"
           >
             <!-- Toolbar -->
-            <div class="border-b bg-gray-50 p-2 flex gap-1 rounded-t-md">
+            <div
+              class="border-b border-(--ui-border-muted) bg-(--ui-bg-elevated) p-2 flex gap-1 rounded-t-md"
+            >
               <UButton
                 v-if="editor"
-                :class="{ 'bg-gray-200': editor.isActive('bold') }"
+                :class="{
+                  'bg-(--ui-bg-inverted) text-(--ui-text-inverted)':
+                    editor.isActive('bold'),
+                }"
                 aria-label="Bold"
                 size="sm"
                 color="neutral"
@@ -374,7 +378,10 @@ const publishWorkshop = async () => {
               />
               <UButton
                 v-if="editor"
-                :class="{ 'bg-gray-200': editor.isActive('italic') }"
+                :class="{
+                  'bg-(--ui-bg-inverted) text-(--ui-text-inverted)':
+                    editor.isActive('italic'),
+                }"
                 aria-label="Italic"
                 size="sm"
                 color="neutral"
@@ -384,7 +391,10 @@ const publishWorkshop = async () => {
               />
               <UButton
                 v-if="editor"
-                :class="{ 'bg-gray-200': editor.isActive('strike') }"
+                :class="{
+                  'bg-(--ui-bg-inverted) text-(--ui-text-inverted)':
+                    editor.isActive('strike'),
+                }"
                 aria-label="Strikethrough"
                 size="sm"
                 color="neutral"
@@ -434,72 +444,4 @@ const publishWorkshop = async () => {
   </UContainer>
 </template>
 
-<style>
-/* TipTap Editor Styles */
-.ProseMirror {
-  min-height: 400px;
-  padding: 1rem;
-  outline: none;
-}
-
-.ProseMirror:focus {
-  outline: none;
-}
-
-/* Prose styling for editor content */
-.ProseMirror p {
-  margin-bottom: 1rem;
-}
-
-.ProseMirror strong {
-  font-weight: bold;
-}
-
-.ProseMirror em {
-  font-style: italic;
-}
-
-.ProseMirror s {
-  text-decoration: line-through;
-}
-
-.ProseMirror h1,
-.ProseMirror h2,
-.ProseMirror h3 {
-  font-weight: bold;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.ProseMirror h1 {
-  font-size: 2rem;
-}
-
-.ProseMirror h2 {
-  font-size: 1.5rem;
-}
-
-.ProseMirror h3 {
-  font-size: 1.25rem;
-}
-
-.ProseMirror ul,
-.ProseMirror ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.ProseMirror blockquote {
-  border-left: 3px solid #e5e7eb;
-  padding-left: 1rem;
-  margin-left: 0;
-  font-style: italic;
-}
-
-.ProseMirror code {
-  background-color: #f3f4f6;
-  padding: 0.125rem 0.25rem;
-  border-radius: 0.25rem;
-  font-family: monospace;
-}
-</style>
+<style scoped></style>
