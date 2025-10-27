@@ -8,7 +8,7 @@ export default defineEventHandler((event) => {
   const id = getRouterParam(event, "id");
 
   const workshop = MOCK_WORKSHOPS.find((w) => w.id === id);
-
+  console.log("`/api/workshops/${id} GET` workshop=", workshop);
   if (!workshop) {
     throw createError({
       statusCode: 404,
