@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Editor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
+import { TextStyle } from "@tiptap/extension-text-style";
 
 definePageMeta({
   layout: "padded",
@@ -9,7 +10,6 @@ definePageMeta({
 interface WorkshopForm {
   title: string;
   description: string;
-  document: string;
 }
 
 const route = useRoute();
@@ -19,20 +19,19 @@ const isEditMode = computed(() => !!workshopId.value);
 const form = ref<WorkshopForm>({
   title: "",
   description: "",
-  document: "",
 });
 
 // TODO: implement validation with form schema
 
 const isSubmitting = ref(false);
 const isPublishing = ref(false);
-const contentInvalid = ref(false);
 const isLoading = ref(false);
 const existingWorkshop = ref<Workshop | null>(null);
 const lastSaved = ref<Date | null>(null);
 
 // TipTap editor setup
 const editor = ref<Editor | null>(null);
+const isEditorEmpty = ref(false);
 
 const { createWorkshop, getWorkshop, updateWorkshop } = useWorkshops();
 
@@ -63,7 +62,6 @@ const loadWorkshop = async () => {
           ? JSON.parse(workshop.draftJson)
           : workshop.draftJson;
       editor.value.commands.setContent(content);
-      form.value.document = JSON.stringify(content);
     }
 
     // Set last saved time to workshop's updatedAt
@@ -83,12 +81,11 @@ const loadWorkshop = async () => {
 
 onMounted(async () => {
   editor.value = new Editor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, TextStyle],
     editable: true,
     onUpdate: ({ editor }) => {
       const json = editor.getJSON();
-      form.value.document = JSON.stringify(json);
-      contentInvalid.value = false;
+      isEditorEmpty.value = json.content.length === 0;
     },
     editorProps: {
       attributes: {
@@ -130,7 +127,7 @@ const isContentEmpty = () => {
 const onSubmit = async () => {
   // Validate content
   if (isContentEmpty()) {
-    contentInvalid.value = true;
+    isEditorEmpty.value = true;
     const toast = useToast();
     toast.add({
       title: "Content is required",
@@ -143,7 +140,11 @@ const onSubmit = async () => {
   isSubmitting.value = true;
 
   try {
-    const content = JSON.parse(form.value.document);
+    const content = editor.value?.getJSON();
+
+    if (!content) {
+      throw new Error("Failed to get editor content");
+    }
 
     if (existingWorkshop.value) {
       // Update existing workshop
@@ -193,7 +194,7 @@ const onSubmit = async () => {
 const publishWorkshop = async () => {
   // Validate content
   if (isContentEmpty()) {
-    contentInvalid.value = true;
+    isEditorEmpty.value = true;
     const toast = useToast();
     toast.add({
       title: "Content is required",
@@ -206,7 +207,11 @@ const publishWorkshop = async () => {
   isPublishing.value = true;
 
   try {
-    const content = JSON.parse(form.value.document);
+    const content = editor.value?.getJSON();
+
+    if (!content) {
+      throw new Error("Failed to get editor content");
+    }
 
     if (existingWorkshop.value) {
       // Update and publish existing workshop
@@ -332,83 +337,89 @@ const publishWorkshop = async () => {
               :rows="4"
             />
           </UFormField>
-
-          <!-- Workshop Document Input -->
-          <UFormField label="Workshop Document" required>
-            <div
-              class="border rounded-md"
-              :class="{ 'border-red-500': contentInvalid }"
-            >
-              <!-- Toolbar -->
-              <div class="border-b bg-gray-50 p-2 flex gap-1 rounded-t-md">
-                <UButton
-                  v-if="editor"
-                  :class="{ 'bg-gray-200': editor.isActive('bold') }"
-                  aria-label="Bold"
-                  size="sm"
-                  color="neutral"
-                  variant="ghost"
-                  icon="i-heroicons-bold"
-                  @click="editor.chain().focus().toggleBold().run()"
-                />
-                <UButton
-                  v-if="editor"
-                  :class="{ 'bg-gray-200': editor.isActive('italic') }"
-                  aria-label="Italic"
-                  size="sm"
-                  color="neutral"
-                  variant="ghost"
-                  icon="i-heroicons-italic"
-                  @click="editor.chain().focus().toggleItalic().run()"
-                />
-                <UButton
-                  v-if="editor"
-                  :class="{ 'bg-gray-200': editor.isActive('strike') }"
-                  aria-label="Strikethrough"
-                  size="sm"
-                  color="neutral"
-                  variant="ghost"
-                  icon="i-heroicons-strikethrough"
-                  @click="editor.chain().focus().toggleStrike().run()"
-                />
-              </div>
-
-              <!-- Editor Content -->
-              <div v-if="editor">
-                <EditorContent :editor="(editor as any)" />
-              </div>
-            </div>
-            <p v-if="contentInvalid" class="text-red-500 text-sm mt-1">
-              Please enter workshop content
-            </p>
-          </UFormField>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-row justify-between gap-4 pt-6">
-            <UButton
-              color="primary"
-              variant="solid"
-              size="lg"
-              class=""
-              loading-auto
-              @click="onSubmit"
-            >
-              {{ existingWorkshop ? "Save Changes" : "Save Draft" }}
-            </UButton>
-
-            <UButton
-              v-if="!existingWorkshop?.isPublished"
-              color="error"
-              variant="solid"
-              size="lg"
-              class=""
-              loading-auto
-              @click="publishWorkshop"
-            >
-              Publish
-            </UButton>
-          </div>
         </UForm>
+
+        <!-- Workshop Document Editor -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-medium text-gray-900">
+              Workshop Document
+              <span class="text-red-500">*</span>
+            </label>
+          </div>
+          <div
+            class="border rounded-md"
+            :class="{ 'border-red-500': isEditorEmpty }"
+          >
+            <!-- Toolbar -->
+            <div class="border-b bg-gray-50 p-2 flex gap-1 rounded-t-md">
+              <UButton
+                v-if="editor"
+                :class="{ 'bg-gray-200': editor.isActive('bold') }"
+                aria-label="Bold"
+                size="sm"
+                color="neutral"
+                variant="ghost"
+                icon="i-heroicons-bold"
+                @click="editor.chain().focus().toggleBold().run()"
+              />
+              <UButton
+                v-if="editor"
+                :class="{ 'bg-gray-200': editor.isActive('italic') }"
+                aria-label="Italic"
+                size="sm"
+                color="neutral"
+                variant="ghost"
+                icon="i-heroicons-italic"
+                @click="editor.chain().focus().toggleItalic().run()"
+              />
+              <UButton
+                v-if="editor"
+                :class="{ 'bg-gray-200': editor.isActive('strike') }"
+                aria-label="Strikethrough"
+                size="sm"
+                color="neutral"
+                variant="ghost"
+                icon="i-heroicons-strikethrough"
+                @click="editor.chain().focus().toggleStrike().run()"
+              />
+            </div>
+
+            <!-- Editor Content -->
+            <div v-if="editor">
+              <EditorContent :editor="(editor as any)" />
+            </div>
+          </div>
+          <p v-if="isEditorEmpty" class="text-red-500 text-sm">
+            Please enter workshop content
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-row justify-between gap-4 pt-6">
+          <UButton
+            color="primary"
+            variant="solid"
+            size="lg"
+            class=""
+            loading-auto
+            @click="onSubmit"
+          >
+            {{ existingWorkshop ? "Save Changes" : "Save Draft" }}
+          </UButton>
+
+          <UButton
+            v-if="!existingWorkshop?.isPublished"
+            color="error"
+            variant="solid"
+            size="lg"
+            class=""
+            loading-auto
+            @click="publishWorkshop"
+          >
+            Publish
+          </UButton>
+        </div>
       </UCard>
     </div>
   </UContainer>
