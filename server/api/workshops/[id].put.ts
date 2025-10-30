@@ -1,4 +1,4 @@
-import { MOCK_WORKSHOPS } from "~/../shared/utils/mockData";
+import { updateWorkshop } from "../../repository/workshopRepository";
 
 /**
  * PUT /api/workshops/:id
@@ -8,33 +8,30 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
   const body = await readBody(event);
 
-  const index = MOCK_WORKSHOPS.findIndex((w) => w.id === id);
+  if (!id) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Workshop ID is required",
+    });
+  }
 
-  if (index === -1) {
+  // TODO: Validate the request body
+
+  const updatedWorkshop = await updateWorkshop(id, body);
+
+  if (!updatedWorkshop) {
     throw createError({
       statusCode: 404,
       statusMessage: "Workshop not found",
     });
   }
 
-  if (MOCK_WORKSHOPS[index].isDeleted) {
+  if (updatedWorkshop.isDeleted) {
     throw createError({
       statusCode: 410,
       statusMessage: "Cannot update a deleted workshop",
     });
   }
-
-  // TODO: Validate the request body
-  // TODO: Actually persist to database
-
-  const updatedWorkshop: Workshop = {
-    ...MOCK_WORKSHOPS[index],
-    ...body,
-    id, // Ensure ID doesn't change
-    updatedAt: new Date().toISOString(),
-  };
-
-  MOCK_WORKSHOPS[index] = updatedWorkshop;
 
   console.log("Workshop updated:", updatedWorkshop);
 

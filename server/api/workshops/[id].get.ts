@@ -1,14 +1,21 @@
-import { MOCK_WORKSHOPS } from "~/../shared/utils/mockData";
+import { fetchWorkshopById } from "../../repository/workshopRepository";
 
 /**
  * GET /api/workshops/:id
  * Returns a single workshop by ID
  */
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
 
-  const workshop = MOCK_WORKSHOPS.find((w) => w.id === id);
-  console.log("`/api/workshops/${id} GET` workshop=", workshop);
+  if (!id) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Workshop ID is required",
+    });
+  }
+
+  const workshop = await fetchWorkshopById(id);
+
   if (!workshop) {
     throw createError({
       statusCode: 404,

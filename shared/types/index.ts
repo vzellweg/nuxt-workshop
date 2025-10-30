@@ -7,8 +7,8 @@ export interface Workshop {
   description: string;
   slug: string | null; // for human-readable urls, will implement these later, just use id's for now
   kind: WorkshopKind;
-  draftJson: unknown | null; // tiptap JSON while editing
-  publishedJson: unknown | null; // snapshot used on the public page
+  draftJson?: unknown | null; // tiptap JSON while editing
+  publishedJson?: unknown | null; // snapshot used on the public page
   isPublished: boolean;
   publishedAt: string | null;
   createdAt: string;

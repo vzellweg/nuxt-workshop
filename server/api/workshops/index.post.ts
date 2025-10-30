@@ -1,4 +1,4 @@
-import { MOCK_WORKSHOPS } from "~/../shared/utils/mockData";
+import { createWorkshop } from "../../repository/workshopRepository";
 
 /**
  * POST /api/workshops
@@ -8,27 +8,17 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   // TODO: Validate the request body
-  // TODO: Actually persist to database instead of just mock array
 
-  const newWorkshop: Workshop = {
-    id: (MOCK_WORKSHOPS.length + 1).toString(),
-    ownerId: body.ownerId || "unknown",
-    slug: body.slug || null,
+  const newWorkshop = await createWorkshop({
+    ownerId: body.ownerId || null,
     title: body.title,
     description: body.description,
-    kind: body.kind || "document",
-    draftJson: body.draftJson || null,
-    publishedJson: body.publishedJson || null,
-    isPublished: body.isPublished || false,
-    publishedAt: body.isPublished ? new Date().toISOString() : null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    isDeleted: false,
-    deletedAt: null,
-  };
-
-  // TODO: Replace with actual database insert
-  MOCK_WORKSHOPS.push(newWorkshop);
+    slug: body.slug,
+    kind: body.kind,
+    draftJson: body.draftJson,
+    publishedJson: body.publishedJson,
+    isPublished: body.isPublished,
+  });
 
   console.log("Workshop created:", newWorkshop);
 
