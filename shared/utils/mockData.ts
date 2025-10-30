@@ -1,10 +1,11 @@
 // We need to explicity import types here since auto-importing doesn't apply within the shared directory
 import type { Workshop } from "../types";
+import { v4 as uuidv4 } from "uuid";
 import mockDataTipTap from "./mockDataTipTap.json";
 
 const MOCK_WORKSHOPS: Workshop[] = [
   {
-    id: "1",
+    id: uuidv4(),
     ownerId: "johndoe",
     slug: null,
     title: "Workshop 1",
@@ -20,7 +21,7 @@ const MOCK_WORKSHOPS: Workshop[] = [
     deletedAt: null,
   },
   {
-    id: "2",
+    id: uuidv4(),
     ownerId: "janedoe",
     slug: null,
     title: "Workshop 2",
@@ -36,7 +37,7 @@ const MOCK_WORKSHOPS: Workshop[] = [
     deletedAt: null,
   },
   {
-    id: "3",
+    id: uuidv4(),
     ownerId: "johndoe2",
     slug: null,
     title: "Workshop 3",
