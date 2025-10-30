@@ -1,16 +1,12 @@
-import { MOCK_WORKSHOPS } from "~/../shared/utils/mockData";
+import { fetchAllWorkshops } from "../../repository/workshopRepository";
 
 /**
  * GET /api/workshops
  * Returns all workshops (excluding deleted ones by default)
  */
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const includeDeleted = query.includeDeleted === "true";
 
-  if (includeDeleted) {
-    return MOCK_WORKSHOPS;
-  }
-
-  return MOCK_WORKSHOPS.filter((workshop) => !workshop.isDeleted);
+  return await fetchAllWorkshops(includeDeleted);
 });
