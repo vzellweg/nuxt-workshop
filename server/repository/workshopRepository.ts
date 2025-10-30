@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import type { Workshop } from "~/../shared/types";
+import type { Workshop, WorkshopKind } from "~/../shared/types";
 
 // Initialize storage with memory driver
 const storage = useStorage("workshops");
